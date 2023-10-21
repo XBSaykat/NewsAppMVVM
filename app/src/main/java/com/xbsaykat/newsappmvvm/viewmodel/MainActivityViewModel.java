@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.xbsaykat.newsappmvvm.BuildConfig;
 import com.xbsaykat.newsappmvvm.model.NewsResponse;
 import com.xbsaykat.newsappmvvm.net.NewsRepository;
 
@@ -20,25 +21,27 @@ public class MainActivityViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void init() {
-        if(mutableLiveData != null){
+    public void getNews(String source, String cat) {
+        if (mutableLiveData != null) {
             return;
         }
         newsRepository = new NewsRepository();
-        mutableLiveData = newsRepository.getNews("US", "YOUR API KEY");
-    }
-    public void Search(String keyword) {
-        if(mutableLiveDataBySearch != null){
-            return;
-        }
-        newsRepository = new NewsRepository();
-        mutableLiveDataBySearch = newsRepository.getNewsbySearch(keyword,"YOUR API KEY");
+        mutableLiveData = newsRepository.getNews(source, cat);
     }
 
-    public LiveData<NewsResponse> getNewsRepository(){
+    public LiveData<NewsResponse> getNewsObserveData() {
         return mutableLiveData;
     }
-    public LiveData<NewsResponse> getNewsRepositoryBySearch(){
+
+    public void Search(String keyword) {
+        if (mutableLiveDataBySearch != null) {
+            return;
+        }
+        newsRepository = new NewsRepository();
+        mutableLiveDataBySearch = newsRepository.getNewsbySearch(keyword);
+    }
+
+    public LiveData<NewsResponse> getNewsSearchObserveData() {
         return mutableLiveDataBySearch;
     }
 }
